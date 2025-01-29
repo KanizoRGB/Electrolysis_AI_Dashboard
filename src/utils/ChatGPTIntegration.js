@@ -8,6 +8,8 @@ const ChatGPTIntegration = () => {
   const [response, setResponse] = useState(""); // Holds the response from ChatGPT
   const [loading, setLoading] = useState(false); // Tracks the loading state
 
+  const gpt_key = process.env.REACT_APP_OPENAI_API_KEY;
+
   // Function to handle the query submission
   const handleQuerySubmit = async () => {
     if (!query) return;
@@ -48,7 +50,9 @@ ${sensorData.measurements
       const result = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
+          // model: "gpt-4o-mini",
           model: "gpt-3.5-turbo",
+          // model: "dall-e-3",
           messages: [
             { role: "system", content: "You are a helpful assistant analyzing data." },
             { role: "user", content: `Here is the data: ${formattedData} Now, please answer the following question: ${query}` },
@@ -56,7 +60,7 @@ ${sensorData.measurements
         },
         {
           headers: {
-            Authorization: `Bearer process.env.REACT_APP_OPENAI_API_KEY`,
+            Authorization: `Bearer ${gpt_key}`,
             // Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
             "Content-Type": "application/json",
           },
